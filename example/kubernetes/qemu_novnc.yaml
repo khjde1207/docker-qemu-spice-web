@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qemunovnc-server
+spec:
+ 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "qemunovnc-server"
+  template:
+    metadata:
+      labels:
+        app: qemunovnc-server
+    spec:
+      
+      volumes: 
+      - name: task-pv-storage-ssd
+        persistentVolumeClaim:
+          claimName: host-pvc-ssd
+          readOnly: false
+      containers:
+      - name: qemunovnc
+        image: khjde1207/qemunovnc:latest
+        
+        tcpSocket:
+        securityContext:
+          privileged: true
+   
+        resources:
+          limits:
+            memory: "6500M"
+            cpu: "2000m"
+        ports:
+        - containerPort: 6080
+          protocol: TCP
+          name: "web"
+        - containerPort: 5900
+          protocol: TCP
+          name: "kvm"
+
+        volumeMounts:
+        - mountPath: "/data"
+          name: task-pv-storage-ssd
+          subPath: ".qemunovnc/"
+        
+        env:
+        - name: VM_DISK_IMAGE
+          value: "/data/win10img"
+        - name: VM_DISK_IMAGE_SIZE
+          value: "50G"
+        - name: VM_RAM 
+          value: "4096"
+        - name: ISO
+          value: "win10.iso" # windows-guest.iso is install guest.iso , empty Turn on machine with last image
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qemunovnc-server-service
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 6080
+      name: novnc      
+
+  selector:
+    app: qemunovnc-server
+---
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: qemunovnc-ingressroute 
+  namespace: default
+spec:
+  routes:
+  - match: Host(`xxx.xxx.xxx`)
+    kind: Rule
+    services:
+    - name: qemunovnc-server-service
+      port: 80
