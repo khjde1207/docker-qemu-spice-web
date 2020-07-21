@@ -5,8 +5,8 @@ docker run -d --privileged --cpus=2 \
     -e REMOTE_ACCESS=spice \
     -e VM_RAM=4096 \
     -e ISO=windows-guest.iso \
-    -p 5000:5000 \
-    khjde1207/qemunovnc
+    -p 5959:5959 \
+    khjde1207/qemu
     
     
     

@@ -85,7 +85,7 @@ echo "parameter: ${FLAGS_NETWORK}"
 
 echo "[Remote Access]"
 if [ -z "$REMOTE_ACCESS" ] || [ "$REMOTE_ACCESS" == "spice" ]; then
-    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},addr=0.0.0.0,disable-ticketing"
+    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},password=${SPICE_PASSWORD},addr=0.0.0.0"
 elif [ "$REMOTE_ACCESS" == "vnc" ]; then
     FLAGS_REMOTE_ACCESS="-vnc :0"
 fi
@@ -97,9 +97,9 @@ echo "parameter: ${FLAGS_REMOTE_ACCESS}"
 
 set -x
 
-cd /root/svelte-spice-web
+# cd /root/svelte-spice-web
 
-npm start &
+# npm run dev & 
 
 exec /usr/bin/qemu-system-x86_64 ${FLAGS_REMOTE_ACCESS} \
    -k en-us -m ${VM_RAM} -cpu qemu64 \
@@ -110,6 +110,14 @@ exec /usr/bin/qemu-system-x86_64 ${FLAGS_REMOTE_ACCESS} \
    ${FLAGS_ISO} \
    ${FLAGS_DISK_IMAGE} 
 
+# echo "/usr/bin/qemu-system-x86_64 ${FLAGS_REMOTE_ACCESS} \
+#    -k en-us -m ${VM_RAM} -cpu qemu64 \
+#    -vga virtio \
+#    -enable-kvm \
+#    -usbdevice tablet \
+#    ${FLAGS_NETWORK} \
+#    ${FLAGS_ISO} \
+#    ${FLAGS_DISK_IMAGE}"
 
 #    -enable-vnc \
 #    -enable-vnc-png \
