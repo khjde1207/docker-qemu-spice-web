@@ -19,7 +19,7 @@ ENV NETWORK=
 ENV REMOTE_ACCESS=spice
 ENV HOST=0.0.0.0
 ENV SPICE_PASSWORD=1234
-
+ENV SPICE_ADDRESS=0.0.0.0
 
 RUN apk --update --upgrade add \
       nodejs-npm \

@@ -85,7 +85,7 @@ echo "parameter: ${FLAGS_NETWORK}"
 
 echo "[Remote Access]"
 if [ -z "$REMOTE_ACCESS" ] || [ "$REMOTE_ACCESS" == "spice" ]; then
-    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},password=${SPICE_PASSWORD},addr=localhost"
+    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},password=${SPICE_PASSWORD},addr=${SPICE_ADDRESS}"
 elif [ "$REMOTE_ACCESS" == "vnc" ]; then
     FLAGS_REMOTE_ACCESS="-vnc :0"
 fi
