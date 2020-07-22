@@ -85,7 +85,7 @@ echo "parameter: ${FLAGS_NETWORK}"
 
 echo "[Remote Access]"
 if [ -z "$REMOTE_ACCESS" ] || [ "$REMOTE_ACCESS" == "spice" ]; then
-    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},password=${SPICE_PASSWORD},addr=0.0.0.0"
+    FLAGS_REMOTE_ACCESS="-vga qxl -spice port=${SPICE_PORT},password=${SPICE_PASSWORD},addr=localhost"
 elif [ "$REMOTE_ACCESS" == "vnc" ]; then
     FLAGS_REMOTE_ACCESS="-vnc :0"
 fi
@@ -97,9 +97,9 @@ echo "parameter: ${FLAGS_REMOTE_ACCESS}"
 
 set -x
 
-# cd /root/svelte-spice-web
 
-# npm run dev & 
+
+/root/websockify.py  ${WEB_SPICE_PORT} localhost:5900 & 
 
 exec /usr/bin/qemu-system-x86_64 ${FLAGS_REMOTE_ACCESS} \
    -k en-us -m ${VM_RAM} -cpu qemu64 \

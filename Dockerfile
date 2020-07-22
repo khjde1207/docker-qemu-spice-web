@@ -6,7 +6,8 @@ ENV	LANG en_US.UTF-8
 ENV	LANGUAGE en_US.UTF-8 
 ENV	LC_ALL C.UTF-8 
 ENV	REMOTE_HOST localhost 
-ENV	REMOTE_PORT 5959
+ENV	REMOTE_PORT 5900
+ENV WEB_SPICE_PORT 5959
 
 ENV VM_RAM=2048
 ENV VM_DISK_IMAGE_SIZE=30G
@@ -39,17 +40,20 @@ RUN apk --update --upgrade add \
       dnsmasq \
       nano 
 
-# RUN git clone https://github.com/khjde1207/svelte-spice-web /root/svelte-spice-web \
+RUN git clone https://github.com/novnc/websockify /root 
 # 	&& rm -rf /root/svelte-spice-web/.git \
 # 	&& cd /root/svelte-spice-web \
 #     && ./init.sh \
 # 	&& npm install 
+
+
 
 # RUN ls /root/svelte-spice-web/src
 	# && cp /root/noVNC/node_modules/requirejs/require.js /root/noVNC/build \
     # && ln -s /root/noVNC/build/vnc.html /root/noVNC/build/index.html \
 	# && sed -i -- "s/ps -p/ps -o pid | grep/g" /root/noVNC/utils/launch.sh \
 	# && apk del git nodejs-npm nodejs
+
 
 
 EXPOSE 5959

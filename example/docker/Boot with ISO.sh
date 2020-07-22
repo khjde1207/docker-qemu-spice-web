@@ -7,8 +7,3 @@ docker run -d --privileged --cpus=2 \
     -e ISO=windows-guest.iso \
     -p 5959:5959 \
     khjde1207/qemu
-    
-    
-    
-    
-    -p 5900:5900 \

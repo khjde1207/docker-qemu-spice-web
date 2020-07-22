@@ -1,5 +1,5 @@
 docker run  --privileged --cpus=2 \
-    -v /home/khjde1207/vm:/data \
+    -v ${PWD}:/data \
     -e VM_DISK_IMAGE=/data/win10img \
     -e VM_DISK_IMAGE_SIZE=50G \
     -e VM_RAM=4096 \

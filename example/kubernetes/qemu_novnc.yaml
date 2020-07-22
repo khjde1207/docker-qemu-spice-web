@@ -1,28 +1,30 @@
+# https://software-download.microsoft.com/sg/Win10_2004_Korean_x64.iso?t=17b0d576-b972-4b2c-a5b6-29b71be4e132&e=1594973366&h=7449242db9806580cb8ec76fb34f88b6
+
 ---
-apiVersion: apps/v1
+apiVersion: apps/v1 # for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
 metadata:
-  name: qemunovnc-server
+  name: qemu-server
 spec:
  
   replicas: 1
   selector:
     matchLabels:
-      app: "qemunovnc-server"
+      app: "qemu-server"
   template:
     metadata:
       labels:
-        app: qemunovnc-server
+        app: qemu-server
     spec:
       
-      volumes: 
+      volumes:
       - name: task-pv-storage-ssd
         persistentVolumeClaim:
           claimName: host-pvc-ssd
           readOnly: false
       containers:
-      - name: qemunovnc
-        image: khjde1207/qemunovnc:latest
+      - name: qemu
+        image: khjde1207/qemu:latest
         
         tcpSocket:
         securityContext:
@@ -30,20 +32,17 @@ spec:
    
         resources:
           limits:
-            memory: "6500M"
-            cpu: "2000m"
+            memory: "5000M"
+            cpu: "1000m"
         ports:
-        - containerPort: 6080
+        - containerPort: 5959
           protocol: TCP
-          name: "web"
-        - containerPort: 5900
-          protocol: TCP
-          name: "kvm"
+          name: "spice"
 
         volumeMounts:
         - mountPath: "/data"
           name: task-pv-storage-ssd
-          subPath: ".qemunovnc/"
+          subPath: ".qemu/"
         
         env:
         - name: VM_DISK_IMAGE
@@ -53,32 +52,35 @@ spec:
         - name: VM_RAM 
           value: "4096"
         - name: ISO
-          value: "win10.iso" # windows-guest.iso is install guest.iso , empty Turn on machine with last image
+          value: "test.iso"
+        - name: SPICE_PASSWORD
+          value: "testest"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: qemunovnc-server-service
+  name: qemu-server-service
 spec:
   type: ClusterIP
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 6080
-      name: novnc      
+      port: 5959
+      targetPort: 5959
+      name: qemu      
+
 
   selector:
-    app: qemunovnc-server
+    app: qemu-server
 ---
 kind: IngressRoute
 apiVersion: traefik.containo.us/v1alpha1
 metadata:
-  name: qemunovnc-ingressroute 
+  name: qemu-ingressroute 
   namespace: default
 spec:
   routes:
-  - match: Host(`xxx.xxx.xxx`)
+  - match: Host(`xxx.khjde1207.com`) 
     kind: Rule
     services:
-    - name: qemunovnc-server-service
-      port: 80
+    - name: qemu-server-service
+      port: 5959
