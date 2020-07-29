@@ -30,7 +30,8 @@ RUN apk --update --upgrade add \
       supervisor \
       xvfb \
       x11vnc \
-      python2 \
+      python3 \
+      py3-numpy \
       libvirt-daemon \
       qemu-img \
       qemu-system-x86_64 \
@@ -40,10 +41,10 @@ RUN apk --update --upgrade add \
       dnsmasq \
       nano 
       
-RUN apk add gcc gfortran python-dev py-pip build-base freetype-dev libpng-dev openblas-dev
-RUN pip install numpy
+# RUN apk add gcc gfortran python-dev py-pip build-base freetype-dev libpng-dev openblas-dev
+# RUN pip install numpy
 
-RUN git clone https://github.com/novnc/websockify /websockify
+RUN git clone https://github.com/novnc/websockify /websockify && cd /websockify && python3 setup.py install
 # 	&& rm -rf /root/svelte-spice-web/.git \
 # 	&& cd /root/svelte-spice-web \
 #     && ./init.sh \
