@@ -39,7 +39,7 @@ RUN apk --update --upgrade add \
       bridge-utils \
       dnsmasq \
       nano \
-      numpy
+      py-numpy@community
 
 RUN git clone https://github.com/novnc/websockify /root 
 # 	&& rm -rf /root/svelte-spice-web/.git \
