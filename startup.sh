@@ -99,7 +99,7 @@ set -x
 
 
 
-/root/websockify.py  ${WEB_SPICE_PORT} localhost:5900 & 
+/websockify.py  ${WEB_SPICE_PORT} localhost:5900 & 
 
 exec /usr/bin/qemu-system-x86_64 ${FLAGS_REMOTE_ACCESS} \
    -k en-us -m ${VM_RAM} -cpu qemu64 \

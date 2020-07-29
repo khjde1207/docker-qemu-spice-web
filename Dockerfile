@@ -38,14 +38,16 @@ RUN apk --update --upgrade add \
       wget \
       bridge-utils \
       dnsmasq \
-      nano \
-      py-numpy@community
+      nano 
+      
+RUN apk add gcc gfortran python-dev py-pip build-base freetype-dev libpng-dev openblas-dev
+RUN pip install numpy
 
-RUN git clone https://github.com/novnc/websockify /root 
+RUN git clone https://github.com/novnc/websockify /websockify
 # 	&& rm -rf /root/svelte-spice-web/.git \
 # 	&& cd /root/svelte-spice-web \
 #     && ./init.sh \
-# 	&& npm install 
+# 	&& npm install  
 
 
 

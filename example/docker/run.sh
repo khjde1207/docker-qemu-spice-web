@@ -5,6 +5,7 @@ docker run -d --privileged --cpus=2 \
     -e VM_RAM=4096 \
     -e ISO= \
     -p 5959:5959 \
+    -p 5900:5900 \
     khjde1207/qemu
 
     
